@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+<head>
+	<title>Chartjs TimeLine</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+	<script src="../dist/chartjs-plugin-timeline.js"></script>
+	<style>
+		body{padding: 0; margin: 0;}
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<canvas id="canvas" style="width: 1200px;height:200px;margin: 0 auto;"></canvas>
+		<div style="width: 300px; margin: 0 auto;">
+			<button onclick="testAddLayerData()">add layer data</button>
+			<button onclick="testAddLayerData2()">add layer data repeat id</button><br /><br />
+			<button onclick="testRemoveLayer()">remove layer</button><br /><br />
+			<button onclick="testToggleLayer(true)">hidden line chart</button>
+			<button onclick="testToggleLayer(false)">show line chart</button><br /><br />
+			<button onclick="testUpdateLayerData()">Single point update chart</button>
+			<button onclick="testUpdateLayerData2()">Update a chart</button><br /><br />
+			<button onclick="hideBrush()">hidden brush</button><br />
+			<h3>TODO</h3>
+			<button onclick="playBrush()">play brush</button><button onclick="stopBrush()">stop brush</button><button onclick="destroyBrush()">destroy brush</button><br />
+		</div>
+	</div>
+
+	<script>
+		function randomScalingFactor() {
+			return Math.round(Math.random() * 100 * 1);
+		}
+
+		function newDate(days) {
+			return moment().add(days, 'd').format('YYYY-MM-DD HH:mm:ss');
+		}
+
+		window.onload = function() {
+			var ctx = document.getElementById("canvas").getContext("2d");
+			window.timeLine = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: [newDate(0),newDate(1),newDate(2),newDate(3),newDate(4),newDate(5),newDate(6)],
+					datasets: [{
+						_id: 'line',
+						type: 'line',
+						label: "line",
+						data: [
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor()
+						],
+						fill: false,
+						borderDash: [5, 5],
+						borderColor: 'green',
+						borderWidth: 2,
+						pointHoverBorderWidth: 3,
+						showLines: true
+					}, {
+						_id: 'bar1',
+						type: 'bar',
+						label: "barOne",
+						backgroundColor: [],
+						hoverBackgroundColor: 'rgb(255, 99, 132)',
+						data: [
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor()
+						]
+					}, {
+						_id: 'bar2',
+						type: 'bar',
+						label: "barTwo",
+						backgroundColor: [],
+						hoverBackgroundColor: 'rgb(200, 104, 204)',
+						data: [
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor()
+						]
+					}, {
+						_id: 'scatter',
+						type: 'scatter',
+						label: "scatter",
+						showLine: false,
+						data: [
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor(), 
+							randomScalingFactor()
+						],
+						pointBackgroundColor: [],
+						pointHoverBackgroundColor: 'rgb(0, 0, 0)',
+						fill: false
+					}]
+				},
+				options: {
+					elements: {
+						line: {
+							tension: 0,
+						}
+					},
+					responsive: false,
+					title:{
+						display:true,
+						text:"timeline and brush or zoom"
+					},
+					legend: {
+						display: false
+					},
+					tooltips: {
+						enabled: false
+					},
+					scales: {
+						xAxes: [{
+							type: 'time',
+							bounds: 'data',
+							display: true,
+							scaleLabel: {
+								display: true,
+								labelString: 'timeline'
+							}
+						}],
+						yAxes: [{
+							display: true,
+							scaleLabel: {
+								display: true,
+								labelString: 'data'
+							}
+						}]
+					},
+					timeline: {
+						selected: {
+							style: [{
+								_id: 'line',
+								color: 'green'
+							}, {
+								_id: 'bar1',
+								color: 'rgb(255, 99, 132)'
+							}, {
+								_id: 'bar2',
+								color: 'rgb(200, 104, 204)'
+							}, {
+								_id: 'scatter',
+								color: 'rgb(200, 104, 204)'
+							}],
+							toggleStyle: true
+						},
+						zoom: {
+							enabled: true,
+							sensitivity: 1
+						},
+						brushDisplay: false,
+						xAxesWidth: 60,
+						onSelected: function(data) {
+							console.log('selected data', data);
+						},
+						onClick: function(element) {
+							console.log('click data', element);
+						}
+					}
+				}
+			});
+		};
+
+		// ------------------------test--------------------------------
+
+		function testRemoveLayer(){
+			Chart.TimeLine.Element.removeLayerData(window.timeLine, [{
+				id: 'bar1',
+				key: window.timeLine.data.labels[1]
+			}, {
+				id: 'bar2',
+				key: window.timeLine.data.labels[3]
+			}]);
+		}
+
+		function testToggleLayer(status){
+			Chart.TimeLine.Element.toggleLayer(window.timeLine, 'line', status);
+		}
+		
+		function testAddLayerData(){
+			Chart.TimeLine.Element.addLayerData(window.timeLine, [{ 
+				_id: 'line1',
+				type: 'line',
+				label: "add line",
+				data: [
+					randomScalingFactor(), 
+					randomScalingFactor(), 
+					randomScalingFactor(), 
+					null, 
+					randomScalingFactor(), 
+					randomScalingFactor(), 
+					randomScalingFactor()
+				],
+				fill: false,
+				borderDash: [5, 5],
+				borderWidth: 2,
+				showLines: true
+			}]);
+		}
+
+		function testAddLayerData2(){
+			Chart.TimeLine.Element.addLayerData(window.timeLine, [{ 
+				_id: 'bar1',
+				type: 'bar',
+				label: "barThree",
+				data: [
+					randomScalingFactor(), 
+					randomScalingFactor(), 
+					undefined,
+					randomScalingFactor(), 
+					undefined, 
+					randomScalingFactor(), 
+					null
+				]
+			}]);
+		}
+
+		function testUpdateLayerData(){
+			let data = [
+				{ '_id': 'line', 'data': [{'x': window.timeLine.data.labels[4], 'y': randomScalingFactor()}] },
+				{ '_id': 'bar1', 'data': [{'x': window.timeLine.data.labels[3], 'y': randomScalingFactor()}] },
+				{ '_id': 'bar2', 'data': [{'x': window.timeLine.data.labels[1], 'y': randomScalingFactor()}] },
+				{ '_id': 'scatter', 'data': [{'x': window.timeLine.data.labels[6], 'y': randomScalingFactor()}] }
+			];
+			Chart.TimeLine.Element.updateLayerData(window.timeLine, data);
+		}
+
+
+		function testUpdateLayerData2(){
+			let data = [
+				// If the test length is not enough, just replace the existing data.
+				{ '_id': 'line', 'data': [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()] },
+
+				// There is a null value in the test data, ignoring the situation without updating
+				// undefined -> is not updated
+				// null -> Replace current element value null
+				{ 
+					'_id': 'bar2',
+					'data': [
+						randomScalingFactor(),
+						randomScalingFactor(),
+						undefined,
+						randomScalingFactor(),
+						null,
+						null,
+						randomScalingFactor()
+					]
+				},
+
+				// test all updates
+				{ 
+					'_id': 'scatter', 
+					'data': [
+						randomScalingFactor(),
+						randomScalingFactor(),
+						randomScalingFactor(),
+						randomScalingFactor(),
+						randomScalingFactor(),
+						randomScalingFactor(),
+						randomScalingFactor()
+					]
+				}
+			];
+
+			Chart.TimeLine.Element.updateLayerData(window.timeLine, data);
+		}
+		
+		// hidden brush
+		function hideBrush() {
+			Chart.TimeLine.types.brush.destroy(window.timeLine);
+		}
+	</script>
+</body>
+
+</html>
