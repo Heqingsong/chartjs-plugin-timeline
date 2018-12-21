@@ -9,7 +9,7 @@ Support zoom and selection and change chart color brush
 ![](./docs/img2.png)
 ![](./docs/img3.png)
 
-Out of the box examples are available here: 
+Out of the box examples are available here:https://heqingsong.github.io/chartjs-plugin-timeline/index.html 
 
 ## Configuration
 
