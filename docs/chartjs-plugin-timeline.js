@@ -747,6 +747,17 @@
 	                    return;
 	                }
 
+	                var target = [];
+	                items.data.map(function (value, key) {
+	                    if (Object.prototype.toString.call(value) === "[object Object]") {
+	                        var index = chartInstance.data.labels.indexOf(value.x);
+	                        if (index > -1) target[index] = value.y;
+	                    } else {
+	                        if (value !== undefined) target.push(value);else if (value === null) target.push(null);else target.push(undefined);
+	                    }
+	                });
+
+	                items.data = target;
 	                chartInstance.data.datasets.push(items);
 	            });
 	            chartInstance.update();

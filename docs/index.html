@@ -19,7 +19,8 @@
 		<canvas id="canvas" style="width: 1200px;height:200px;margin: 0 auto;"></canvas>
 		<div style="width: 300px; margin: 0 auto;">
 			<button onclick="testAddLayerData()">add layer data</button>
-			<button onclick="testAddLayerData2()">add layer data repeat id</button><br /><br />
+			<button onclick="testAddLayerData2()">add layer data repeat id</button>
+			<button onclick="testAddLayerData3()">add layer data position</button><br /><br />
 			<button onclick="testRemoveLayer()">remove layer</button><br /><br />
 			<button onclick="testToggleLayer(true)">hidden line chart</button>
 			<button onclick="testToggleLayer(false)">show line chart</button><br /><br />
@@ -233,6 +234,21 @@
 					undefined, 
 					randomScalingFactor(), 
 					null
+				]
+			}]);
+		}
+
+		function testAddLayerData3(){
+			Chart.TimeLine.Element.addLayerData(window.timeLine, [{ 
+				_id: 'bar2',
+				type: 'bar',
+				label: "barFour",
+				data: [
+					{'x': window.timeLine.data.labels[4], 'y': randomScalingFactor()},
+					{'x': window.timeLine.data.labels[2], 'y': randomScalingFactor()},
+					{'x': window.timeLine.data.labels[1], 'y': undefined},
+					{'x': window.timeLine.data.labels[3], 'y': randomScalingFactor()},
+					{'x': window.timeLine.data.labels[6], 'y': null}
 				]
 			}]);
 		}
