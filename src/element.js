@@ -18,9 +18,9 @@ class Element {
                     let index = chartInstance.data.labels.indexOf(value.x);
                     if (index > -1) target[index] = value.y;
                 } else {
-                    if(value !== undefined) target.push(value);
-                    else if(value === null) target.push(null);
-                    else target.push(undefined);
+                    if(value !== undefined) target[key] = value;
+                    else if(value === null) target[key] = null;
+                    else target[key] = undefined;
                 }
             });
 
