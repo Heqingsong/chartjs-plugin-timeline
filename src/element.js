@@ -73,6 +73,7 @@ class Element {
             data: {
                 value: sourceData.data[chartClickValue._index],
                 source: chartClickValue,
+                gasket: (sourceData.gasket && sourceData.gasket[chartClickValue._index]) || null,
                 index: chartClickValue._index
             },
             meta

@@ -226,6 +226,7 @@
 	        filterValues.push({
 	          value: items.data[index],
 	          source: data,
+	          gasket: items.gasket && items.gasket[index] || null,
 	          index: index
 	        });
 	      };
@@ -668,8 +669,8 @@
 	            }
 
 	            _chart2.default.TimeLine.configDefaults.inBrush = brush.positionInChartArea(chartInstance, {
-	                x: e.clientX,
-	                y: e.clientY
+	                x: e.layerX,
+	                y: e.layerY
 	            });
 
 	            if (_chart2.default.TimeLine.configDefaults._mousedown && _chart2.default.TimeLine.configDefaults._selected) {
@@ -810,6 +811,7 @@
 	                data: {
 	                    value: sourceData.data[chartClickValue._index],
 	                    source: chartClickValue,
+	                    gasket: sourceData.gasket && sourceData.gasket[chartClickValue._index] || null,
 	                    index: chartClickValue._index
 	                },
 	                meta: meta

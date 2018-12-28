@@ -66,8 +66,8 @@ export default {
             }
 
             Chart.TimeLine.configDefaults.inBrush =  brush.positionInChartArea(chartInstance, {
-              x: e.clientX,
-              y: e.clientY
+              x: e.layerX,
+              y: e.layerY
             });
     
             if (Chart.TimeLine.configDefaults._mousedown && Chart.TimeLine.configDefaults._selected) {

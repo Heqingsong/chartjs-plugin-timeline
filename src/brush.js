@@ -87,6 +87,7 @@ const Brush = Chart.DatasetController.extend({
         filterValues.push({
           value: items.data[index],
           source: data,
+          gasket: (items.gasket && items.gasket[index]) || null,
           index
         });
       }
