@@ -63,6 +63,7 @@ class Element {
     getElement(chartInstance, event, callback) {
         let chartClickValue = chartInstance.getElementAtEvent(event)[0];
         let sourceData = chartInstance.config.data.datasets[chartClickValue._datasetIndex];
+        let gasket = items.gasket || { data:[] };
         let meta = chartInstance.getDatasetMeta(chartClickValue._datasetIndex);
         let label = sourceData.data.filter(item => item._view === chartClickValue._view);
     
@@ -73,7 +74,7 @@ class Element {
             data: {
                 value: sourceData.data[chartClickValue._index],
                 source: chartClickValue,
-                gasket: (sourceData.gasket && sourceData.gasket[chartClickValue._index]) || null,
+                gasket: gasket.data[chartClickValue._index],
                 index: chartClickValue._index
             },
             meta

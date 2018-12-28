@@ -221,12 +221,13 @@
 
 	    list.forEach(function (items) {
 	      var datas = items._meta[0]['data'];
+	      var gasket = items.gasket || { data: [] };
 	      var filterValues = [];
 	      var setFilterValues = function setFilterValues(index, data) {
 	        filterValues.push({
 	          value: items.data[index],
 	          source: data,
-	          gasket: items.gasket && items.gasket[index] || null,
+	          gasket: gasket.data[index],
 	          index: index
 	        });
 	      };
@@ -799,6 +800,7 @@
 	        value: function getElement(chartInstance, event, callback) {
 	            var chartClickValue = chartInstance.getElementAtEvent(event)[0];
 	            var sourceData = chartInstance.config.data.datasets[chartClickValue._datasetIndex];
+	            var gasket = items.gasket || { data: [] };
 	            var meta = chartInstance.getDatasetMeta(chartClickValue._datasetIndex);
 	            var label = sourceData.data.filter(function (item) {
 	                return item._view === chartClickValue._view;
@@ -811,7 +813,7 @@
 	                data: {
 	                    value: sourceData.data[chartClickValue._index],
 	                    source: chartClickValue,
-	                    gasket: sourceData.gasket && sourceData.gasket[chartClickValue._index] || null,
+	                    gasket: gasket.data[chartClickValue._index],
 	                    index: chartClickValue._index
 	                },
 	                meta: meta

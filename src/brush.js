@@ -82,12 +82,13 @@ const Brush = Chart.DatasetController.extend({
   
     list.forEach(items => {
       let datas = items._meta[0]['data'];
+      let gasket = items.gasket || { data:[] };
       let filterValues = [];
       let setFilterValues = (index, data) => {
         filterValues.push({
           value: items.data[index],
           source: data,
-          gasket: (items.gasket && items.gasket[index]) || null,
+          gasket: gasket.data[index],
           index
         });
       }
