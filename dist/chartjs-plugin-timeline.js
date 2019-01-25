@@ -100,7 +100,7 @@
 	    zoomCumulativeDelta: 0
 	  },
 	  playTimeLineStatus: false,
-	  selectedStyleStatus: true
+	  selectedStyleStatus: false
 	};
 
 	_chart2.default.TimeLine.types = {
@@ -144,7 +144,7 @@
 	  // Determine if the mouse is in the area according to the coordinate position
 	  positionInChartArea: function positionInChartArea(chartInstance, position) {
 	    if (_chart2.default.TimeLine.configDefaults.brushPosition) {
-	      var offsetX = position.x - chartInstance.canvas.offsetLeft;
+	      var offsetX = position.x; // - chartInstance.canvas.offsetLeft;
 	      var endX = _chart2.default.TimeLine.configDefaults.brushPosition.right - chartInstance.canvas.offsetLeft;
 	      return offsetX >= _chart2.default.TimeLine.configDefaults.brushPosition.left && offsetX <= _chart2.default.TimeLine.configDefaults.brushPosition.right && position.y >= chartInstance.chartArea.top + chartInstance.canvas.offsetTop && position.y <= chartInstance.chartArea.bottom + chartInstance.canvas.offsetTop;
 	    } else {
@@ -313,6 +313,12 @@
 	      var newMouseDownX = endPoint.clientX - endPoint.target.getBoundingClientRect().left - _chart2.default.TimeLine.configDefaults.brushPosition.offsetX;
 
 	      newMouseDownX = newMouseDownX <= chartInstance.options.timeline.xAxesWidth ? chartInstance.options.timeline.xAxesWidth : newMouseDownX;
+	      var endX = endPoint.target.getBoundingClientRect().right - endPoint.target.getBoundingClientRect().left;
+
+	      if (newMouseDownX + _chart2.default.TimeLine.configDefaults.brushWidth > endX) {
+	        newMouseDownX = endX - _chart2.default.TimeLine.configDefaults.brushWidth;
+	      }
+
 	      this.draw(ctx, chartInstance.chartArea, newMouseDownX, _chart2.default.TimeLine.configDefaults.brushWidth);
 
 	      _chart2.default.TimeLine.configDefaults.inBrushDrag = true;

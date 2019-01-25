@@ -8,7 +8,7 @@ const Brush = Chart.DatasetController.extend({
   // Determine if the mouse is in the area according to the coordinate position
   positionInChartArea(chartInstance, position) {
     if(Chart.TimeLine.configDefaults.brushPosition){
-      let offsetX = position.x - chartInstance.canvas.offsetLeft;
+      let offsetX = position.x;// - chartInstance.canvas.offsetLeft;
       let endX = Chart.TimeLine.configDefaults.brushPosition.right - chartInstance.canvas.offsetLeft;
       return (offsetX >= Chart.TimeLine.configDefaults.brushPosition.left && offsetX <= Chart.TimeLine.configDefaults.brushPosition.right) && 
              (position.y >= (chartInstance.chartArea.top + chartInstance.canvas.offsetTop) && 
@@ -172,6 +172,12 @@ const Brush = Chart.DatasetController.extend({
       let newMouseDownX = endPoint.clientX - endPoint.target.getBoundingClientRect().left - Chart.TimeLine.configDefaults.brushPosition.offsetX;
       
       newMouseDownX = newMouseDownX <= chartInstance.options.timeline.xAxesWidth ? chartInstance.options.timeline.xAxesWidth : newMouseDownX;
+      let endX = endPoint.target.getBoundingClientRect().right - endPoint.target.getBoundingClientRect().left;
+      
+      if (newMouseDownX + Chart.TimeLine.configDefaults.brushWidth > endX) {
+			  newMouseDownX = endX - Chart.TimeLine.configDefaults.brushWidth;
+      }
+      
       this.draw(ctx, chartInstance.chartArea, newMouseDownX, Chart.TimeLine.configDefaults.brushWidth);
       
       Chart.TimeLine.configDefaults.inBrushDrag = true;

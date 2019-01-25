@@ -32,7 +32,7 @@ Chart.TimeLine.configDefaults = {
     zoomCumulativeDelta: 0
   },
   playTimeLineStatus: false,
-  selectedStyleStatus: true
+  selectedStyleStatus: false
 };
 
 Chart.TimeLine.types = {
