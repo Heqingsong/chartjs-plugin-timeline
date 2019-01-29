@@ -220,7 +220,7 @@
 	    var result = [];
 
 	    list.forEach(function (items) {
-	      var datas = items._meta[0]['data'];
+	      var datas = items._meta[chartInstance.id]['data'];
 	      var gasket = items.gasket || { data: [] };
 	      var filterValues = [];
 	      var setFilterValues = function setFilterValues(index, data) {
@@ -283,14 +283,14 @@
 
 	    if (!!beginPoint && !!endPoint) {
 	      ctx = chartInstance.chart.ctx;
-	      right = Math.max(beginPoint.clientX, endPoint.clientX);
+	      right = Math.max(beginPoint.clientX, endPoint.clientX || 0);
 	    }
 
 	    // selected
 	    if (_chart2.default.TimeLine.configDefaults._selected && chartInstance.canvas.style.cursor !== _chart2.default.TimeLine.configDefaults._mouseStyle[0]) {
 	      chartArea = chartInstance.chartArea;
 	      offsetX = beginPoint.target.getBoundingClientRect().left;
-	      left = Math.min(beginPoint.clientX, endPoint.clientX);
+	      left = Math.min(beginPoint.clientX, endPoint.clientX || 0);
 
 	      var startX = left - offsetX;
 	      startX = startX <= chartInstance.options.timeline.xAxesWidth ? chartInstance.options.timeline.xAxesWidth : startX;
@@ -378,7 +378,7 @@
 	      right: 0,
 	      endX: 0
 	    };
-	    this.clearChartStyle(chartInstance);
+	    _chart2.default.TimeLine.configDefaults.selectedStyleStatus ? this.clearChartStyle(chartInstance) : null;
 
 	    chartInstance.update(0);
 	  },

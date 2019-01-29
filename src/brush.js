@@ -81,7 +81,7 @@ const Brush = Chart.DatasetController.extend({
     let result = [];
   
     list.forEach(items => {
-      let datas = items._meta[0]['data'];
+      let datas = items._meta[chartInstance.id]['data'];
       let gasket = items.gasket || { data:[] };
       let filterValues = [];
       let setFilterValues = (index, data) => {
@@ -142,14 +142,14 @@ const Brush = Chart.DatasetController.extend({
 
     if (!!beginPoint && !!endPoint) {
       ctx = chartInstance.chart.ctx;
-      right = Math.max(beginPoint.clientX, endPoint.clientX);
+      right = Math.max(beginPoint.clientX, endPoint.clientX || 0);
     }
 
     // selected
     if (Chart.TimeLine.configDefaults._selected && chartInstance.canvas.style.cursor !== Chart.TimeLine.configDefaults._mouseStyle[0]) {
       chartArea = chartInstance.chartArea;
       offsetX = beginPoint.target.getBoundingClientRect().left;
-      left = Math.min(beginPoint.clientX, endPoint.clientX);
+      left = Math.min(beginPoint.clientX, endPoint.clientX || 0);
 
       let startX = left - offsetX;
           startX = startX <= chartInstance.options.timeline.xAxesWidth ? chartInstance.options.timeline.xAxesWidth : startX;
@@ -239,7 +239,7 @@ const Brush = Chart.DatasetController.extend({
       right: 0,
       endX: 0
     };
-    this.clearChartStyle(chartInstance);
+    Chart.TimeLine.configDefaults.selectedStyleStatus ? this.clearChartStyle(chartInstance) : null;
 
     chartInstance.update(0);
   },
